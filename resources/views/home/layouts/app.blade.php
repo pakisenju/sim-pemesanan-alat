@@ -7,7 +7,7 @@
 	<title>SIM Pemesanan - @yield('title')</title>
 
 	<!-- Favicon -->
-	<link rel="icon" type="image/png" href="{{ asset('assets/images/favicon/favicon.html') }}" />
+	<link rel="icon" type="image/png" href="{{ asset('assets/images/logo.png') }}" />
 
 	<!-- Bootstrap & Plugins CSS -->
 	<link href="{{ asset('assets/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css">

@@ -5,8 +5,11 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>SIM Pemesanan - @yield('title')</title>
-    <link rel="shortcut icon" type="image/png" href="{{ asset('admin-assets/images/logos/favicon.png') }}" />
+    <link rel="shortcut icon" type="image/png" href="{{ asset('admin-assets/images/logos/logo.png') }}" />
     <link rel="stylesheet" href="{{ asset('admin-assets/css/styles.min.css') }}" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
     @yield('style')
 </head>
 
@@ -23,8 +26,10 @@
             @include('admin.layouts.header')
             <!--  Header End -->
             @yield('content')
+            @include('admin.layouts.footer')
         </div>
     </div>
+    @include('admin.components.modal-logout')
     @include('admin.layouts.js-file')
     @yield('script')
 </body>

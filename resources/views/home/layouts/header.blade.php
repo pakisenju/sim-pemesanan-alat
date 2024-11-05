@@ -4,16 +4,20 @@
             <div class="col-12">
                 <nav class="main-nav">
                     <!-- ***** Logo Start ***** -->
-                    <a href="dark-index.html" class="logo">
-                        <img src="{{ asset('assets/images/dark-logo-white.svg') }}" class="light-logo" alt="Babil"/>
-                        <img src="{{ asset('assets/images/dark-logo-white.svg') }}" class="dark-logo" alt="Babil"/>
+                    <a href="dark-index.html" class="logo d-flex gap-3 align-items-center" style="margin-top: 2em;">
+                        <img src="{{ asset('assets/images/logo.png') }}" class="light-logo" width="30" alt="Babil"/>
+                        <img src="{{ asset('assets/images/logo.png') }}" class="dark-logo" width="30" alt="Babil"/>
+                        <h6 class="light-logo text-warning m-0 align-center fw-bold">PT Amanah Inti Pratama</h6>
+                        <h6 class="dark-logo text-black m-0 align-center fw-bold">PT Amanah Inti Pratama</h6>
                     </a>
                     <!-- ***** Logo End ***** -->
 
 
                     <!-- ***** Menu Start ***** -->
                     <ul class="nav">
-                        <li><a href="dark-index.html#welcome">Home</a></li>
+                        <li>
+                            <a href="{{ route('home.index') }}" class="{{ Route::is('home*') ? 'text-warning' : '' }}">Home</a>
+                        </li>
                         <li class="submenu">
                             <a href="javascript:;">Discover</a>
                             <ul>
@@ -33,7 +37,7 @@
                             </ul>
                         </li>
                         <li><a href="dark-contact.html">Contact</a></li>
-                        <li><a class="btn-nav" href="dark-contact.html">Free Try</a></li>
+                        <li><a class="btn-nav" href="{{ route('login.index') }}">Login</a></li>
                     </ul>
                     <a class="menu-trigger">
                         <span>Menu</span>

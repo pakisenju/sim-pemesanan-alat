@@ -47,7 +47,7 @@
                     <script>
                         document.write(new Date().getFullYear());
                     </script>
-                    Babil. All Rights Reserved.
+                    PT Amanah Inti Pratama
                 </p>
             </div>
         </div>
