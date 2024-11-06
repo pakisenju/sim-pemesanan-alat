@@ -1,4 +1,4 @@
-<header class="header-area">
+<header class="header-area {{ Route::is('home*') ? '' : 'header-white' }}">
     <div class="container">
         <div class="row">
             <div class="col-12">
@@ -18,25 +18,15 @@
                         <li>
                             <a href="{{ route('home.index') }}" class="{{ Route::is('home*') ? 'text-warning' : '' }}">Home</a>
                         </li>
-                        <li class="submenu">
-                            <a href="javascript:;">Discover</a>
-                            <ul>
-                                <li><a href="#">Features</a></li>
-                                <li><a href="#">Testimonials</a></li>
-                                <li><a href="#-plans">Pricing Plans</a></li>
-                                <li><a href="#">Latests Blogs</a></li>
-                            </ul>
+                        <li>
+                            <a href="{{ route('about.index') }}" class="{{ Route::is('about*') ? 'text-warning' : '' }}">Tentang Kami</a>
                         </li>
-                        <li class="submenu">
-                            <a href="javascript:;">Pages</a>
-                            <ul>
-                                <li><a href="#">About Us</a></li>
-                                <li><a href="#">Features</a></li>
-                                <li><a href="#">FAQ's</a></li>
-                                <li><a href="#">Blog</a></li>
-                            </ul>
+                        <li>
+                            <a href="{{ route('product.index') }}" class="{{ Route::is('product*') ? 'text-warning' : '' }}">Produk Kami</a>
                         </li>
-                        <li><a href="dark-contact.html">Contact</a></li>
+                        <li>
+                            <a href="{{ route('contact.index') }}" class="{{ Route::is('contact*') ? 'text-warning' : '' }}">Kontak</a>
+                        </li>
                         <li><a class="btn-nav" href="{{ route('login.index') }}">Login</a></li>
                     </ul>
                     <a class="menu-trigger">
