@@ -3,64 +3,73 @@
 namespace App\Http\Controllers;
 
 use App\Models\AlatBerat;
-use App\Http\Requests\StoreAlatBeratRequest;
-use App\Http\Requests\UpdateAlatBeratRequest;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class AlatBeratController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        return view('admin.pages.alat-berat.index');
+        $alatBerats = AlatBerat::all();
+        return view('admin.pages.alat-berat.index', compact('alatBerats'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function store(Request $request)
     {
-        //
+        $validatedData = $request->validate([
+            'nama_alat' => 'required|string|max:255',
+            'kapasitas' => 'required|string|max:100',
+            'harga_sewa' => 'required|integer',
+            'status_ketersediaan' => 'required|in:Tersedia,Disewakan,Maintenance',
+            'tahun_pembuatan' => 'required|string|max:4',
+            'lokasi' => 'required|string|max:255',
+            'deskripsi' => 'required|string',
+            'thumbnail' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+        ]);
+
+        if ($request->hasFile('thumbnail')) {
+            $validatedData['thumbnail'] = $request->file('thumbnail')->store('thumbnails', 'public');
+        }
+
+        AlatBerat::create($validatedData);
+
+        return redirect()->route('alat-berat.index')->with('OK', 'Alat berat berhasil ditambahkan.');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreAlatBeratRequest $request)
+    public function update(Request $request, AlatBerat $alatBerat)
     {
-        //
+        $validatedData = $request->validate([
+            'nama_alat' => 'required|string|max:255',
+            'kapasitas' => 'required|string|max:100',
+            'harga_sewa' => 'required|integer',
+            'status_ketersediaan' => 'required|in:Tersedia,Disewakan,Maintenance',
+            'tahun_pembuatan' => 'required|string|max:4',
+            'lokasi' => 'required|string|max:255',
+            'deskripsi' => 'required|string',
+            'thumbnail' => 'image|mimes:jpeg,png,jpg|max:2048',
+        ]);
+
+        if ($request->hasFile('thumbnail')) {
+            if ($alatBerat->thumbnail && Storage::exists('public/' . $alatBerat->thumbnail)) {
+                Storage::delete('public/' . $alatBerat->thumbnail);
+            }
+
+            $validatedData['thumbnail'] = $request->file('thumbnail')->store('thumbnails', 'public');
+        }
+
+        $alatBerat->update($validatedData);
+
+        return redirect()->route('alat-berat.index')->with('OK', 'Alat berat berhasil diperbarui.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(AlatBerat $alatBerat)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(AlatBerat $alatBerat)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateAlatBeratRequest $request, AlatBerat $alatBerat)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(AlatBerat $alatBerat)
     {
-        //
+        if ($alatBerat->thumbnail && Storage::exists('public/' . $alatBerat->thumbnail)) {
+            Storage::delete('public/' . $alatBerat->thumbnail);
+        }
+
+        $alatBerat->delete();
+
+        return redirect()->route('alat-berat.index')->with('OK', 'Alat berat berhasil dihapus.');
     }
 }

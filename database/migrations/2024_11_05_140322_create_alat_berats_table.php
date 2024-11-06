@@ -13,6 +13,14 @@ return new class extends Migration
     {
         Schema::create('alat_berats', function (Blueprint $table) {
             $table->id();
+            $table->string('nama_alat');
+            $table->string('thumbnail');
+            $table->string('kapasitas');
+            $table->integer('harga_sewa');
+            $table->enum('status_ketersediaan', ['Tersedia', 'Disewakan', 'Maintenance'])->default('Tersedia');
+            $table->string('tahun_pembuatan');
+            $table->longText('deskripsi');
+            $table->string('lokasi');
             $table->timestamps();
         });
     }

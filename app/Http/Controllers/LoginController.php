@@ -38,9 +38,9 @@ class LoginController extends Controller
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            return redirect()->intended('/dashboard')->with('SUCCESS', 'Login berhasil');
+            return redirect()->intended('/dashboard')->with('OK', 'Login berhasil');
         } else {
-            return redirect()->back()->with('ERROR', 'Username atau Password yang anda masukkan salah');
+            return redirect()->back()->with('ERR', 'Username atau Password yang anda masukkan salah');
         }
     }
 
@@ -82,6 +82,6 @@ class LoginController extends Controller
         Session::flush();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        return redirect('/home');
+        return redirect('/');
     }
 }
