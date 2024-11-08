@@ -39,7 +39,7 @@
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link {{ Route::is('penyewaan*') ? 'active' : '' }}" href="#" aria-expanded="false">
+                    <a class="sidebar-link {{ Route::is('penyewaan*') ? 'active' : '' }}" href="{{ route('penyewaan.index') }}" aria-expanded="false">
                         <span>
                             <i class="ti ti-presentation"></i>
                         </span>
@@ -60,7 +60,7 @@
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link" href="./authentication-login.html" aria-expanded="false">
+                    <a class="sidebar-link {{ Route::is('pelanggan*') ? 'active' : '' }}" href="{{ route('pelanggan.index') }}" aria-expanded="false">
                         <span>
                             <i class="ti ti-building-store"></i>
                         </span>

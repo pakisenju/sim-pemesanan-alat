@@ -101,7 +101,7 @@
                                     <th>Thumbnail</th>
                                     <th>Nama Alat</th>
                                     <th>Kapasitas</th>
-                                    <th>Harga Sewa</th>
+                                    <th>Harga Sewa (Jam)</th>
                                     <th>Status</th>
                                     <th>Actions</th>
                                 </tr>
@@ -345,7 +345,7 @@
             }
 
             if (!isValid) {
-                event.preventDefault(); 
+                event.preventDefault();
             }
             return isValid;
         }

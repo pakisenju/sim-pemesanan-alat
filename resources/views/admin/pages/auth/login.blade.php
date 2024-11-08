@@ -113,5 +113,12 @@
                 document.getElementById('loginForm').submit();
             }
         }
+
+        document.getElementById('loginForm').addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault(); 
+                validateForm();
+            }
+        });
     </script>
 @endsection

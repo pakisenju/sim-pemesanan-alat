@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Pelanggan;
 use App\Http\Requests\StorePelangganRequest;
 use App\Http\Requests\UpdatePelangganRequest;
+use App\Models\User;
+use Illuminate\Http\Request;
+use Spatie\Permission\Models\Role;
 
 class PelangganController extends Controller
 {
@@ -13,7 +16,9 @@ class PelangganController extends Controller
      */
     public function index()
     {
-        //
+        $users = User::whereHas('pelanggan')->get();
+
+        return view('admin.pages.customer.index', compact('users'));
     }
 
     /**
@@ -27,9 +32,24 @@ class PelangganController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StorePelangganRequest $request)
+    public function store(Request $request, $userId)
     {
-        //
+        $request->validate([
+            'nama' => 'required|string',
+            'nomor_telepon' => 'required|string|min:10',
+            'alamat' => 'required|string',
+            'instansi' => 'nullable|string',
+        ]);
+
+        $pelanggan = Pelanggan::create([
+            'user_id' => $userId,
+            'nama' => $request->nama,
+            'nomor_telepon' => $request->nomor_telepon,
+            'alamat' => $request->alamat,
+            'instansi' => $request->instansi,
+        ]);
+
+        return $pelanggan;
     }
 
     /**

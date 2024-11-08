@@ -16,7 +16,7 @@
 </div>
 
 <div class="mb-3">
-    <label for="addHargaSewa" class="form-label">Harga Sewa</label>
+    <label for="addHargaSewa" class="form-label">Harga Sewa (Per jam)</label>
     <input type="number" class="form-control" id="addHargaSewa" name="harga_sewa">
     <div class="mt-1 text-danger d-none" id="addHargaSewaError"></div>
 </div>

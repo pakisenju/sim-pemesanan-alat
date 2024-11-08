@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AlatBerat;
+use App\Models\Pelanggan;
+use App\Models\Penyewaan;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -11,7 +14,14 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home.pages.home');
+        $alatBerats = AlatBerat::all();
+        $pelanggans = Pelanggan::all();
+
+        $penyewaans = Penyewaan::with('alat', 'pelanggan')->get();
+
+        $data = compact('alatBerats', 'penyewaans', 'pelanggans');
+
+        return view('home.pages.home', $data);
     }
 
     /**

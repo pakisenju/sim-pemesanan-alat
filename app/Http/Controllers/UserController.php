@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use App\Models\Pelanggan; 
+use App\Models\Pelanggan;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 
@@ -30,13 +30,13 @@ class UserController extends Controller
         $user->assignRole($request->role);
 
         if (in_array('Customer', $request->role)) {
-            Pelanggan::create([
-                'user_id' => $user->id,
+            $pelangganController = app(PelangganController::class);
+            $pelangganController->store(new Request([
                 'nama' => $validatedData['name'],
                 'nomor_telepon' => $request->nomor_telepon ?? null,
                 'alamat' => $request->alamat ?? null,
                 'instansi' => $request->instansi ?? null,
-            ]);
+            ]), $user->id);
         }
 
         return redirect()->route('user.index')->with('OK', 'Pengguna berhasil ditambahkan.');

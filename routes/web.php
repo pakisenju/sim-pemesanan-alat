@@ -6,6 +6,8 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\PelangganController;
+use App\Http\Controllers\PenyewaanController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\UserController;
@@ -37,5 +39,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('dashboard', DashboardController::class);
     Route::resource('alat-berat', AlatBeratController::class);
     Route::resource('user', UserController::class);
+    Route::resource('pelanggan', PelangganController::class);
+    Route::resource('penyewaan', PenyewaanController::class);
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 });

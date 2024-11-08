@@ -16,7 +16,7 @@
 </div>
 
 <div class="mb-3">
-    <label for="editHargaSewa" class="form-label">Harga Sewa</label>
+    <label for="editHargaSewa" class="form-label">Harga Sewa (Per jam)</label>
     <input type="number" class="form-control" id="editHargaSewa" name="harga_sewa" value="{{ $alat->harga_sewa }}">
     <div class="mt-1 text-danger d-none" id="editHargaSewaError"></div>
 </div>

@@ -43,6 +43,9 @@ class RegisterController extends Controller
                 'email' => 'required|string|email',
                 'name' => 'required|string',
                 'password' => 'required|string|min:6',
+                'nomor_telepon' => 'required|string|min:10',
+                'alamat' => 'required|string',
+                'instansi' => 'nullable|string',
             ]);
 
             $usernameTersedia = $this->manajemenUser->where('username', $request->username)->first();
@@ -64,6 +67,9 @@ class RegisterController extends Controller
 
             $user = $this->manajemenUser->create($data);
             $user->syncRoles('Customer');
+
+            $pelangganController = app(PelangganController::class);
+            $pelangganController->store($request, $user->id);
 
             DB::commit();
 

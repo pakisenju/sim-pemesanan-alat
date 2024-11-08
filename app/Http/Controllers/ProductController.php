@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AlatBerat;
+use App\Models\Penyewaan;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -11,7 +13,12 @@ class ProductController extends Controller
      */
     public function index()
     {
-        return view('home.pages.product');
+        $alatBerats = AlatBerat::all();
+        $penyewaans = Penyewaan::with('alat', 'pelanggan')->get();
+
+        $data = compact('alatBerats', 'penyewaans');
+
+        return view('home.pages.product', $data);
     }
 
     /**
@@ -33,9 +40,14 @@ class ProductController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show($id)
     {
-        //
+        $alatBerats = AlatBerat::findOrFail($id);
+        $penyewaans = Penyewaan::with('alat', 'pelanggan')->get();
+
+        $data = compact('alatBerats', 'penyewaans');
+
+        return view('home.pages.detail-product', $data);
     }
 
     /**

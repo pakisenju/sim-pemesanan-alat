@@ -29,32 +29,58 @@
             <img src="{{ asset('admin-assets/images/logos/logo.png') }}" width="50" alt="">
         </a>
         <p class="text-center fw-bold fs-4">PT Amanah Inti Pratama</p>
-        <p class="text-dark fw-bold fs-6">Daftar</p>
+        <p class="text-dark fw-bold fs-6">Daftar sebagai pelanggan</p>
         <form id="registerForm" action="{{ route('register.store') }}" method="POST">
             @csrf
-            <div class="mb-3">
-                <label for="name" class="form-label">
-                    Nama Lengkap
-                    <span class="text-danger">*</span>
-                </label>
-                <input type="text" class="form-control" id="name" name="name">
-                <div class="mt-1 text-danger d-none" id="nameError"></div>
+            <div class="d-flex justify-content-between mb-3 gap-3">
+                <div class="form-group w-50">
+                    <label for="name" class="form-label">
+                        Nama Lengkap
+                        <span class="text-danger">*</span>
+                    </label>
+                    <input type="text" class="form-control" id="name" name="name" required>
+                    <div class="mt-1 text-danger d-none" id="nameError"></div>
+                </div>
+                <div class="form-group w-50">
+                    <label for="username" class="form-label">
+                        Username
+                        <span class="text-danger">*</span>
+                    </label>
+                    <input type="text" class="form-control" id="username" name="username" required>
+                    <div class="mt-1 text-danger d-none" id="usernameError"></div>
+                </div>
             </div>
             <div class="mb-3">
-                <label for="username" class="form-label">
-                    Username
-                    <span class="text-danger">*</span>
-                </label>
-                <input type="text" class="form-control" id="username" name="username">
-                <div class="mt-1 text-danger d-none" id="usernameError"></div>
             </div>
             <div class="mb-3">
                 <label for="email" class="form-label">
                     Email
                     <span class="text-danger">*</span>
                 </label>
-                <input type="email" class="form-control" id="email" name="email">
+                <input type="email" class="form-control" id="email" name="email" required>
                 <div class="mt-1 text-danger d-none" id="emailError"></div>
+            </div>
+            <div class="mb-3">
+                <label for="nomor_telepon" class="form-label">
+                    Nomor Telepon
+                    <span class="text-danger">*</span>
+                </label>
+                <input type="text" class="form-control" id="nomor_telepon" name="nomor_telepon" required>
+                <div class="mt-1 text-danger d-none" id="nomorTeleponError"></div>
+            </div>
+            <div class="mb-3">
+                <label for="alamat" class="form-label">
+                    Alamat
+                    <span class="text-danger">*</span>
+                </label>
+                <textarea class="form-control" id="alamat" name="alamat" rows="3" required></textarea>
+                <div class="mt-1 text-danger d-none" id="alamatError"></div>
+            </div>
+            <div class="mb-3">
+                <label for="instansi" class="form-label">
+                    Instansi (Optional)
+                </label>
+                <input type="text" class="form-control" id="instansi" name="instansi">
             </div>
             <div class="mb-4">
                 <label for="password" class="form-label">
@@ -62,7 +88,7 @@
                     <span class="text-danger">*</span>
                 </label>
                 <div class="passwordInput">
-                    <input type="password" class="form-control" id="password" name="password">
+                    <input type="password" class="form-control" id="password" name="password" required>
                     <button type="button" onclick="togglePasswordVisibility()">
                         <i class="ti ti-eye"></i>
                     </button>
@@ -97,33 +123,20 @@
         function validateForm() {
             let isValid = true;
 
-            const fields = [{
-                    id: 'name',
-                    errorId: 'nameError',
-                    name: 'Nama Lengkap'
-                },
-                {
-                    id: 'username',
-                    errorId: 'usernameError',
-                    name: 'Username'
-                },
-                {
-                    id: 'email',
-                    errorId: 'emailError',
-                    name: 'Email'
-                },
-                {
-                    id: 'password',
-                    errorId: 'passwordError',
-                    name: 'Password'
-                }
+            const fields = [
+                { id: 'name', errorId: 'nameError', name: 'Nama Lengkap' },
+                { id: 'username', errorId: 'usernameError', name: 'Username' },
+                { id: 'email', errorId: 'emailError', name: 'Email' },
+                { id: 'nomor_telepon', errorId: 'nomorTeleponError', name: 'Nomor Telepon' },
+                { id: 'alamat', errorId: 'alamatError', name: 'Alamat' },
+                { id: 'password', errorId: 'passwordError', name: 'Password' },
             ];
 
             fields.forEach(field => {
                 const input = document.getElementById(field.id);
                 const errorDiv = document.getElementById(field.errorId);
 
-                if (input.value.trim() === "") {
+                if (input.value.trim() === '') {
                     errorDiv.classList.remove('d-none');
                     errorDiv.textContent = `${field.name} tidak boleh kosong.`;
                     isValid = false;
@@ -136,5 +149,12 @@
                 document.getElementById('registerForm').submit();
             }
         }
+
+        document.getElementById('registerForm').addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                validateForm();
+            }
+        });
     </script>
 @endsection
