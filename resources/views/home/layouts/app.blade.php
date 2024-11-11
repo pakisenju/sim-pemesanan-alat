@@ -4,7 +4,7 @@
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>SIM Pemesanan - @yield('title')</title>
+	<title>PT Amanah Inti Pratama - @yield('title')</title>
 
 	<!-- Favicon -->
 	<link rel="icon" type="image/png" href="{{ asset('assets/images/logo.png') }}" />

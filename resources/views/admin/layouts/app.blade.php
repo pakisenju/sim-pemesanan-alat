@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>SIM Pemesanan - @yield('title')</title>
+    <title>PT Amanah Inti Pratama - @yield('title')</title>
     <link rel="shortcut icon" type="image/png" href="{{ asset('admin-assets/images/logos/logo.png') }}" />
     <link rel="stylesheet" href="{{ asset('admin-assets/css/styles.min.css') }}" />
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

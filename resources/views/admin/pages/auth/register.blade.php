@@ -50,37 +50,39 @@
                     <div class="mt-1 text-danger d-none" id="usernameError"></div>
                 </div>
             </div>
-            <div class="mb-3">
+            <div class="d-flex justify-content-between mb-3 gap-3">
+                <div class="form-group w-50">
+                    <label for="email" class="form-label">
+                        Email
+                        <span class="text-danger">*</span>
+                    </label>
+                    <input type="email" class="form-control" id="email" name="email" required>
+                    <div class="mt-1 text-danger d-none" id="emailError"></div>
+                </div>
+                <div class="form-group w-50">
+                    <label for="nomor_telepon" class="form-label">
+                        Nomor Telepon
+                        <span class="text-danger">*</span>
+                    </label>
+                    <input type="text" class="form-control" id="nomor_telepon" name="nomor_telepon" required>
+                    <div class="mt-1 text-danger d-none" id="nomorTeleponError"></div>
+                </div>
             </div>
-            <div class="mb-3">
-                <label for="email" class="form-label">
-                    Email
-                    <span class="text-danger">*</span>
-                </label>
-                <input type="email" class="form-control" id="email" name="email" required>
-                <div class="mt-1 text-danger d-none" id="emailError"></div>
-            </div>
-            <div class="mb-3">
-                <label for="nomor_telepon" class="form-label">
-                    Nomor Telepon
-                    <span class="text-danger">*</span>
-                </label>
-                <input type="text" class="form-control" id="nomor_telepon" name="nomor_telepon" required>
-                <div class="mt-1 text-danger d-none" id="nomorTeleponError"></div>
-            </div>
-            <div class="mb-3">
-                <label for="alamat" class="form-label">
-                    Alamat
-                    <span class="text-danger">*</span>
-                </label>
-                <textarea class="form-control" id="alamat" name="alamat" rows="3" required></textarea>
-                <div class="mt-1 text-danger d-none" id="alamatError"></div>
-            </div>
-            <div class="mb-3">
-                <label for="instansi" class="form-label">
-                    Instansi (Optional)
-                </label>
-                <input type="text" class="form-control" id="instansi" name="instansi">
+            <div class="d-flex justify-content-between mb-3 gap-3">
+                <div class="form-group w-50">
+                    <label for="alamat" class="form-label">
+                        Alamat
+                        <span class="text-danger">*</span>
+                    </label>
+                    <textarea class="form-control" id="alamat" name="alamat" rows="3" required></textarea>
+                    <div class="mt-1 text-danger d-none" id="alamatError"></div>
+                </div>
+                <div class="form-group w-50">
+                    <label for="instansi" class="form-label">
+                        Instansi (Optional)
+                    </label>
+                    <input type="text" class="form-control" id="instansi" name="instansi">
+                </div>
             </div>
             <div class="mb-4">
                 <label for="password" class="form-label">

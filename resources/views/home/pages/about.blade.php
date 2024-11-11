@@ -41,24 +41,34 @@
                             <div class="row">
                                 <div class="offset-lg-2 col-lg-8">
                                     <h2>PT Amanah Inti Pratama</h2>
-                                    <p>Phasellus vitae velit sit amet diam semper commodo quis quis libero. Morbi consequat
-                                        arcu augue, molestie faucibus metus ullamcorper vel. Quisque lacinia fringilla
-                                        fermentum. Suspendisse faucibus lectus convallis, elementum nisl sed,</p>
+                                    <p>
+                                        PT. Amanah Inti Pratama adalah perusahaan yang bergerak di bidang jual beli besi
+                                        scrap atau material bekas, penyewaan transportasi, angkutan dan alat berat. Berdiri
+                                        sejak Juli 2019 di Balikpapan, Kalimantan Timur, PT. Amanah Inti Pratama telah
+                                        menyediakan jasa transport, angkutan, rental excavator dan penyewaan crane bagi
+                                        banyak perusahaan besar di Indonesia.
+                                    </p>
                                 </div>
                                 <div class="offset-lg-1 col-lg-10">
                                     <div class="about-image">
                                         <div class="img-1">
-                                            <img src="{{ asset('assets/images/photos/about/3.jpg') }}" class="img-fluid" alt="">
+                                            <img src="{{ asset('assets/images/photos/about/3.jpg') }}" class="img-fluid"
+                                                alt="">
                                         </div>
                                         <div class="img-2">
-                                            <img src="{{ asset('assets/images/photos/about/4.jpg') }}" class="img-fluid" alt="">
+                                            <img src="{{ asset('assets/images/photos/about/4.jpg') }}" class="img-fluid"
+                                                alt="">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="offset-lg-2 col-lg-8">
-                                    <p>Mauris vitae facilisis tortor. Nam venenatis nisi et arcu facilisis blandit. Ut
-                                        congue libero nec augue vulputate maximus. Praesent blandit imperdiet felis ut
-                                        dapibus. Mauris elementum pretium tellus, non pellentesque dui dignissim non. </p>
+                                    <p>
+                                        Kami menawarkan beragam jenis transportasi dan angkutan diantaranya crane truck 5
+                                        ton, crane mobile cap. 35 ton & cap. 50 ton, longbed, Froklift, Excavator, dan Dump
+                                        Truck
+                                        PT. Amanah Inti Pratama selalu memberikan harga yang terbaik, disertakan dengan
+                                        pelayanan yang profesional, handal dan terpercaya.
+                                    </p>
                                 </div>
                             </div>
                         </div>

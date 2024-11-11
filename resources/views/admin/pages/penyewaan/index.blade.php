@@ -7,9 +7,7 @@
     <div class="container-fluid">
         <div class="d-flex justify-content-between mb-4">
             <h3 class="fw-semibold m-0">Penyewaan Alat Berat</h3>
-            @role(['Pimpinan', 'Karyawan'])
-                <a class="btn btn-primary" href="">Daftar Penyewaan</a>
-            @endrole
+            <a class="btn btn-primary" href="{{ route('penyewaan.indexList') }}">Riwayat Penyewaan</a>
         </div>
 
         <div class="row">
@@ -66,6 +64,11 @@
                         <input type="hidden" name="alat_id" id="alat_id">
 
                         <div class="mb-3">
+                            <label for="lokasi_penyewaan" class="form-label">Lokasi Penyewaan:</label>
+                            <input type="text" name="lokasi_penyewaan" id="lokasi_penyewaan" class="form-control" required>
+                        </div>
+
+                        <div class="mb-3">
                             <label for="tgl_sewa" class="form-label">Tanggal dan Waktu Mulai:</label>
                             <input type="datetime-local" name="tgl_sewa" id="tgl_sewa" class="form-control" required>
                         </div>
@@ -84,7 +87,7 @@
                         <div class="mb-1">
                             <label for="bukti_pembayaran" class="form-label">Upload Bukti Pembayaran:</label>
                             <input type="file" name="bukti_pembayaran" id="bukti_pembayaran" class="form-control"
-                                accept=".jpg,.jpeg,.png,.pdf" required>
+                                accept=".jpg,.jpeg,.png" required>
                             <small class="text-muted">Format yang didukung: JPG, JPEG, PNG, PDF</small>
                         </div>
                         <div class="mb-3">

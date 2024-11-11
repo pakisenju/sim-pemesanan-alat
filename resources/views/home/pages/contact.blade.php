@@ -1,6 +1,8 @@
 @extends('home.layouts.app')
 @section('title', 'Kontak')
 @section('style')
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 @endsection
 
 @section('content')
@@ -34,7 +36,7 @@
 
         <!-- ***** Page Content Start ***** -->
         <div class="page-bottom">
-            <div class="contact">
+            <div class="contact mb-4">
                 <div class="container">
                     <div class="row">
                         <div class="col-lg-4 col-md-6 col-sm-12">
@@ -42,7 +44,10 @@
                                 <div class="icon">
                                     <i class="fa fa-location-arrow"></i>
                                 </div>
-                                <p>455 West Orchard Street Kings Mountain, NC 28086</p>
+                                <p>
+                                    Jl Wolter Monginsidi No 50
+                                    Balikpapan Barat, Balikpapan
+                                </p>
                             </div>
                         </div>
                         <div class="col-lg-4 col-md-6 col-sm-12">
@@ -50,8 +55,8 @@
                                 <div class="icon">
                                     <i class="fa fa-phone"></i>
                                 </div>
-                                <a href="tel:(272)211-7370">(272) 211-7370</a>
-                                <a href="tel:(272)211-7370">(272) 211-7370</a>
+                                <a href="tel:(62) 811-5444-344">(62) 811-5444-344</a>
+                                <a href="tel:(62) 811-5444-344">(62) 811-5444-244</a>
                             </div>
                         </div>
                         <div class="col-lg-4 col-md-6 col-sm-12">
@@ -59,13 +64,15 @@
                                 <div class="icon">
                                     <i class="fa fa-envelope"></i>
                                 </div>
-                                <a href="mailto:support@yourbrand.com">support@yourbrand.com</a>
-                                <a href="mailto:info@yourbrand.com">info@yourbrand.com</a>
+                                <a href="mailto:amanahintipratama@gmail.com">amanahintipratama@gmail.com</a>
+                                <a href="mailto:aip.2020@yahoo.com">aip.2020@yahoo.com</a>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
+            <div id="map" style="width: 60%; height: 400px; margin: 0 auto; border-radius: 10px; z-index: 0;"></div>
 
             {{-- <div class="contact-bottom">
                 <div class="container">
@@ -111,5 +118,16 @@
 @endsection
 
 @section('script')
+    <script>
+        var map = L.map('map').setView([-1.2227088475516248, 116.81373870445641], 13);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        L.marker([-1.2227088475516248, 116.81373870445641]).addTo(map)
+            .bindPopup('Jl Wolter Monginsidi No 50 Baru Ulu<br>Balikpapan Barat, Balikpapan')
+            .openPopup();
+    </script>
 
 @endsection

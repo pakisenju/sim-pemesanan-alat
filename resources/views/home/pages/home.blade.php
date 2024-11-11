@@ -29,7 +29,8 @@
                         </h1>
                         <p>Menyediakan produk terbaik</p>
                         <div class="buttons">
-                            <a href="#" class="btn btn-outline-warning">Pesan Sekarang</a>
+                            <a href="{{ !Auth::check() ? route('login.index') : route('penyewaan.index') }}"
+                                class="btn btn-outline-warning">Pesan Sekarang</a>
                         </div>
                     </div>
                 </div>
@@ -92,7 +93,8 @@
                                         <div class="text">
                                             {{ Str::limit($alat->deskripsi, 100) }}
                                         </div>
-                                        <a href="{{ route('product.show', $alat->id) }}" class="btn-primary-line">Lihat Detail</a>
+                                        <a href="{{ route('product.show', $alat->id) }}" class="btn-primary-line">Lihat
+                                            Detail</a>
                                     </div>
                                 </div>
                             </div>
@@ -119,11 +121,12 @@
             </div>
         </div>
         <div class="right-item">
-            <img src="{{ asset('assets/images/photos/about/3.jpg') }}" alt="">
+            <img src="{{ asset('assets/images/photos/about/4.jpg') }}" alt="">
             <div class="content">
                 <h6>Daftarkan Akun Anda</h6>
                 <p>Silahkan mendaftar terlebih dahulu sebelum melakukan pemesanan.</p>
-                <a href="{{ route('register.index') }}" class="btn-primary-line">Daftar Sekarang</a>
+                <a href="{{ !Auth::check() ? route('register.index') : route('dashboard.index') }}"
+                    class="btn-primary-line">Daftar Sekarang</a>
             </div>
         </div>
         <div class="bottom"></div>

@@ -31,4 +31,9 @@ class AlatBerat extends Model
     {
         return $this->hasMany(Pemeliharaan::class, 'alat_id');
     }
+
+    public function latestPemeliharaan()
+    {
+        return $this->hasOne(Pemeliharaan::class, 'alat_id')->latestOfMany();
+    }
 }

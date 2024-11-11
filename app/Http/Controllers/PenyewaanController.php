@@ -20,11 +20,21 @@ class PenyewaanController extends Controller
         $alatBerats = AlatBerat::all();
         $pelanggans = Pelanggan::all();
 
+        $data = compact('alatBerats', 'pelanggans');
+
+        return view('admin.pages.penyewaan.index', $data);
+    }
+
+    public function indexList()
+    {
+        $alatBerats = AlatBerat::all();
+        $pelanggans = Pelanggan::all();
+
         $penyewaans = Penyewaan::with('alat', 'pelanggan')->get();
 
         $data = compact('alatBerats', 'penyewaans', 'pelanggans');
 
-        return view('admin.pages.penyewaan.index', $data);
+        return view('admin.pages.penyewaan.list-penyewaan', $data);
     }
 
     /**
@@ -45,6 +55,7 @@ class PenyewaanController extends Controller
             'tgl_sewa' => 'required|date_format:Y-m-d\TH:i',
             'tgl_kembali' => 'required|date_format:Y-m-d\TH:i|after:tgl_sewa',
             'bukti_pembayaran' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
+            'lokasi_penyewaan' => 'required|string',
         ]);
 
         $pelanggan = auth()->user()->pelanggan;
@@ -53,7 +64,7 @@ class PenyewaanController extends Controller
             return redirect()->back()->withErrors(['error' => 'Anda belum terdaftar sebagai pelanggan.']);
         }
 
-        $alatBerat = AlatBerat::findOrFail($request->alat_id);
+        $alatBerat = AlatBerat::findOrFail($validated['alat_id']);
 
         $start = new DateTime($validated['tgl_sewa']);
         $end = new DateTime($validated['tgl_kembali']);
@@ -61,7 +72,7 @@ class PenyewaanController extends Controller
 
         $totalHarga = $hours * $alatBerat->harga_sewa;
 
-        $buktiPembayaranPath = $request->file('bukti_pembayaran')->store('bukti_pembayarans', 'public');
+        $filePath = $request->file('bukti_pembayaran')->store('bukti_pembayarans', 'public');
 
         Penyewaan::create([
             'alat_id' => $validated['alat_id'],
@@ -69,11 +80,61 @@ class PenyewaanController extends Controller
             'tgl_sewa' => $validated['tgl_sewa'],
             'tgl_kembali' => $validated['tgl_kembali'],
             'total_harga' => $totalHarga,
-            'bukti_pembayaran' => $buktiPembayaranPath,
+            'bukti_pembayaran' => $filePath,
             'status_penyewaan' => 'Sedang Diproses',
+            'lokasi_penyewaan' => $validated['lokasi_penyewaan'],
         ]);
 
-        return redirect()->route('penyewaan.index')->with('success', 'Penyewaan berhasil ditambahkan.');
+        return redirect()->route('penyewaan.index')->with('OK', 'Penyewaan berhasil ditambahkan.');
+    }
+
+    public function accept(Request $request, Penyewaan $penyewaan)
+    {
+        $alat = $penyewaan->alat;
+        $alat->update(['status_ketersediaan' => 'Disewakan']);
+        $penyewaan->update(['status_penyewaan' => 'Sedang Berjalan']);
+
+        $this->sendFonnteNotification(
+            $penyewaan->pelanggan->nomor_telepon,
+            "Halo {$penyewaan->pelanggan->nama},\n\nPenyewaan alat berat *{$alat->nama_alat}* telah disetujui. Penyewaan Anda sekarang berstatus *Sedang Berjalan*. Terima kasih telah menggunakan produk kami!"
+        );
+
+        return redirect()->route('penyewaan.indexList')->with('OK', 'Penyewaan berhasil disetujui.');
+    }
+
+    public function reject(Request $request, Penyewaan $penyewaan)
+    {
+        $validated = $request->validate([
+            'alasan_penolakan' => 'required|string|max:255',
+            'bukti_refund' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
+        ]);
+
+        $filePath = null;
+        if ($request->hasFile('bukti_refund')) {
+            $filePath = $request->file('bukti_refund')->store('bukti_refunds', 'public');
+        }
+
+        $penyewaan->update([
+            'status_penyewaan' => 'Ditolak',
+            'alasan_penolakan' => $validated['alasan_penolakan'],
+            'bukti_refund' => $filePath,
+        ]);
+
+        $this->sendFonnteNotification(
+            $penyewaan->pelanggan->nomor_telepon,
+            "Halo {$penyewaan->pelanggan->nama},\n\nPenyewaan alat berat *{$penyewaan->alat->nama_alat}* telah ditolak.\n\nAlasan Penolakan: {$validated['alasan_penolakan']}\n\nSilakan hubungi kami untuk informasi lebih lanjut."
+        );
+
+        return redirect()->route('penyewaan.indexList')->with('OK', 'Penyewaan berhasil ditolak.');
+    }
+
+    public function finish(Request $request, Penyewaan $penyewaan)
+    {
+        $penyewaan->update(['status_penyewaan' => 'Selesai']);
+
+        $penyewaan->alat->update(['status_ketersediaan' => 'Tersedia']);
+
+        return redirect()->route('penyewaan.indexList')->with('OK', 'Penyewaan berhasil diselesaikan.');
     }
 
     /**
@@ -106,5 +167,35 @@ class PenyewaanController extends Controller
     public function destroy(Penyewaan $penyewaan)
     {
         //
+    }
+
+    private function sendFonnteNotification($phoneNumber, $message)
+    {
+        $token = 'VgUwxRSGsQc4z-jc9@gX';
+        $url = 'https://api.fonnte.com/send';
+
+        $data = [
+            'target' => $phoneNumber,
+            'message' => $message,
+            'countryCode' => '62',
+        ];
+
+        $headers = [
+            'Authorization: ' . $token,
+            'Content-Type: application/x-www-form-urlencoded',
+        ];
+
+        $ch = curl_init();
+
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+
+        $response = curl_exec($ch);
+        curl_close($ch);
+
+        return $response;
     }
 }

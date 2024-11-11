@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('alat_id');
             $table->date('tgl_servis');
-            $table->longText('deskripsi');
+            $table->longText('deskripsi')->nullable();
             $table->integer('biaya_servis');
             $table->enum('status_pemeliharaan', ['Dalam Proses', 'Selesai'])->default('Dalam Proses');
             $table->timestamps();

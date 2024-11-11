@@ -48,7 +48,7 @@
                                         <div class="img">
                                             <img src="{{ asset('storage/' . $alatBerats->thumbnail) }}"
                                                 alt="{{ $alatBerats->nama_alat }}">
-                                            <div class="date" style="width:150px">
+                                            <div class="date" style="min-width:200px">
                                                 <strong class="px-3">Rp
                                                     {{ number_format($alatBerats->harga_sewa, 0, ',', '.') }}/Jam</strong>
                                             </div>
@@ -66,17 +66,22 @@
                                                 <!-- ***** Post Content Start ***** -->
                                                 <div class="text post-detail">
                                                     <h5 class="card-title m-0">{{ $alatBerats->nama_alat }}</h5>
-                                                    <p class="card-text m-0"><strong>Kapasitas:</strong> {{ $alatBerats->kapasitas }}
+                                                    <p class="card-text m-0"><strong>Kapasitas:</strong>
+                                                        {{ $alatBerats->kapasitas }}
                                                     </p>
                                                     <p class="card-text m-0"><strong>Harga Sewa:</strong> Rp
                                                         {{ number_format($alatBerats->harga_sewa, 0, ',', '.') }}/jam</p>
                                                     <p class="card-text m-0"><strong>Status:</strong>
                                                         {{ $alatBerats->status_ketersediaan }}</p>
-                                                    <p class="card-text m-0"><strong>Lokasi:</strong> {{ $alatBerats->lokasi }}</p>
+                                                    <p class="card-text m-0"><strong>Lokasi:</strong>
+                                                        {{ $alatBerats->lokasi }}</p>
                                                     <p class="card-text m-0"><strong>Tahun Pembuatan:</strong>
                                                         {{ $alatBerats->tahun_pembuatan }}</p>
                                                     <p class="card-text m-0">{{ $alatBerats->deskripsi }}</p>
-                                                    <a href="{{ route('login.index') }}" class="btn btn-primary-line p-0 mt-3">Pesan Sekarang</a>
+                                                    @if ($alatBerats->status_ketersediaan === 'Tersedia')
+                                                        <a href="{{ !Auth::check() ? route('login.index') : route('penyewaan.index') }}"
+                                                            class="btn btn-primary-line p-0 mt-3">Pesan Sekarang</a>
+                                                    @endif
                                                 </div>
                                             </div>
                                         </div>

@@ -15,11 +15,12 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('alat_id');
             $table->unsignedBigInteger('pelanggan_id');
-            $table->date('tgl_sewa');
-            $table->date('tgl_kembali');
+            $table->datetime('tgl_sewa');
+            $table->datetime('tgl_kembali');
             $table->integer('total_harga');
             $table->enum('status_penyewaan', ['Sedang Diproses', 'Sedang Berjalan', 'Ditolak', 'Selesai'])->default('Sedang Diproses');
             $table->string('bukti_pembayaran');
+            $table->string('lokasi_penyewaan');
             $table->string('alasan_penolakan')->nullable();
             $table->string('bukti_refund')->nullable();
             $table->timestamps();

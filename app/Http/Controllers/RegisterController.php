@@ -36,48 +36,34 @@ class RegisterController extends Controller
      */
     public function store(Request $request)
     {
-        DB::beginTransaction();
-        try {
-            $request->validate([
-                'username' => 'required|string',
-                'email' => 'required|string|email',
-                'name' => 'required|string',
-                'password' => 'required|string|min:6',
-                'nomor_telepon' => 'required|string|min:10',
-                'alamat' => 'required|string',
-                'instansi' => 'nullable|string',
-            ]);
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'username' => 'required|string|max:255|unique:users',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8',
+            'nomor_telepon' => 'required|string|min:10',
+            'alamat' => 'required|string',
+            'instansi' => 'nullable|string',
+        ]);
 
-            $usernameTersedia = $this->manajemenUser->where('username', $request->username)->first();
-            if ($usernameTersedia !== null) {
-                return redirect()->back()->with('ERR', 'Username Telah Dipakai!')->withInput();
-            }
+        $user = User::create([
+            'name' => $validatedData['name'],
+            'username' => $validatedData['username'],
+            'email' => $validatedData['email'],
+            'password' => bcrypt($validatedData['password']),
+        ]);
 
-            $emailTersedia = $this->manajemenUser->where('email', $request->email)->first();
-            if ($emailTersedia !== null) {
-                return redirect()->back()->with('ERR', 'Email Telah Dipakai!')->withInput();
-            }
+        $user->assignRole('Customer');
 
-            $data = [
-                'name' => $request->name,
-                'username' => $request->username,
-                'email' => $request->email,
-                'password' => bcrypt($request->password),
-            ];
+        $pelangganController = app(PelangganController::class);
+        $pelangganController->store(new Request([
+            'nama' => $validatedData['name'],
+            'nomor_telepon' => $validatedData['nomor_telepon'],
+            'alamat' => $validatedData['alamat'],
+            'instansi' => $validatedData['instansi'],
+        ]), $user->id);
 
-            $user = $this->manajemenUser->create($data);
-            $user->syncRoles('Customer');
-
-            $pelangganController = app(PelangganController::class);
-            $pelangganController->store($request, $user->id);
-
-            DB::commit();
-
-            return redirect()->route('login.index')->with('OK', 'Berhasil melakukan pendaftaran!');
-        } catch (Exception $e) {
-            DB::rollBack();
-            return redirect()->back()->with('ERR', 'Gagal melakukan pendaftaran: ' . $e->getMessage())->withInput();
-        }
+        return redirect()->route('login.index')->with('OK', 'Pendaftaran berhasil dilakukan.');
     }
 
 

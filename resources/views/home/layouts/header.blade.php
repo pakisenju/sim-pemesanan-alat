@@ -27,7 +27,7 @@
                         <li>
                             <a href="{{ route('contact.index') }}" class="{{ Route::is('contact*') ? 'text-warning' : '' }}">Kontak</a>
                         </li>
-                        <li><a class="btn-nav" href="{{ route('login.index') }}">Login</a></li>
+                        <li><a class="btn-nav" href="{{ !Auth::check() ? route('login.index') : route('dashboard.index') }}">Login</a></li>
                     </ul>
                     <a class="menu-trigger">
                         <span>Menu</span>

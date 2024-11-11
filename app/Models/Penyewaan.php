@@ -17,7 +17,11 @@ class Penyewaan extends Model
         'tgl_sewa',
         'tgl_kembali',
         'total_harga',
+        'bukti_pembayaran',
         'status_penyewaan',
+        'lokasi_penyewaan',
+        'alasan_penolakan',
+        'bukti_refund',
     ];
 
     public function alat()

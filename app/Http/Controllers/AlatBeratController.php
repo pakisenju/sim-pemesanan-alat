@@ -10,7 +10,7 @@ class AlatBeratController extends Controller
 {
     public function index()
     {
-        $alatBerats = AlatBerat::all();
+        $alatBerats = AlatBerat::with('latestPemeliharaan')->get();
         return view('admin.pages.alat-berat.index', compact('alatBerats'));
     }
 

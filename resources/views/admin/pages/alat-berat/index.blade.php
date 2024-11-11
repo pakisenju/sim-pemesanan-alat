@@ -89,9 +89,15 @@
                 <div class="card w-100 p-5">
                     <div class="d-sm-flex d-block align-items-center justify-content-between mb-3">
                         <h5 class="card-title fw-semibold m-0">List Alat Berat</h5>
-                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addModal">
-                            <i class="ti ti-plus me-1"></i> Tambah
-                        </button>
+                        <div class="card-toolbar d-flex gap-2">
+                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addModal">
+                                <i class="ti ti-plus me-1"></i> Tambah Data
+                            </button>
+                            <button class="btn btn-outline-secondary" data-bs-toggle="modal"
+                                data-bs-target="#maintenanceModal">
+                                <i class="ti ti-settings me-1"></i> Maintenance
+                            </button>
+                        </div>
                     </div>
                     <div class="card-body p-0 ">
                         <table class="table table-bordered table-hover" id="alatTable">
@@ -128,14 +134,22 @@
                                         </td>
                                         <td>
                                             <div class="action-buttons">
-                                                <button class="btn btn-outline-info" data-bs-toggle="modal"
-                                                    data-bs-target="#editModal{{ $alat->id }}" title="Edit">
-                                                    <i class="ti ti-edit"></i>
-                                                </button>
-                                                <button class="btn btn-outline-danger" data-bs-toggle="modal"
-                                                    data-bs-target="#deleteModal{{ $alat->id }}" title="Delete">
-                                                    <i class="ti ti-trash"></i>
-                                                </button>
+                                                @if ($alat->latestPemeliharaan && $alat->latestPemeliharaan->status_pemeliharaan === 'Dalam Proses')
+                                                    <button class="btn btn-outline-warning" data-bs-toggle="modal"
+                                                        data-bs-target="#finishMaintenanceModal{{ $alat->id }}"
+                                                        title="Finish Maintenance">
+                                                        Dalam Pemeliharaan
+                                                    </button>
+                                                @else
+                                                    <button class="btn btn-outline-info" data-bs-toggle="modal"
+                                                        data-bs-target="#editModal{{ $alat->id }}" title="Edit">
+                                                        <i class="ti ti-edit"></i>
+                                                    </button>
+                                                    <button class="btn btn-outline-danger" data-bs-toggle="modal"
+                                                        data-bs-target="#deleteModal{{ $alat->id }}" title="Delete">
+                                                        <i class="ti ti-trash"></i>
+                                                    </button>
+                                                @endif
                                             </div>
                                         </td>
                                     </tr>
@@ -193,6 +207,78 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <!-- Finish Maintenance Modal -->
+                                    <div class="modal fade" id="finishMaintenanceModal{{ $alat->id }}" tabindex="-1"
+                                        aria-labelledby="finishMaintenanceModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="finishMaintenanceModalLabel">Update
+                                                        Pemeliharaan</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+                                                </div>
+                                                <form
+                                                    action="{{ route('pemeliharaan.update', $alat->latestPemeliharaan->id ?? '') }}"
+                                                    method="POST">
+                                                    @csrf
+                                                    @method('PUT')
+                                                    <div class="modal-body">
+                                                        <input type="hidden" name="alat_id"
+                                                            value="{{ $alat->id }}">
+                                                        <div class="mb-3">
+                                                            <label for="tgl_servis" class="form-label">
+                                                                Tanggal Servis
+                                                                <span class="text-danger">*</span>
+                                                            </label>
+                                                            <input type="date" class="form-control" name="tgl_servis"
+                                                                value="{{ $alat->latestPemeliharaan->tgl_servis ?? '' }}"
+                                                                required>
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <label for="deskripsi" class="form-label">
+                                                                Deskripsi
+                                                                <span class="text-danger">*</span>
+                                                            </label>
+                                                            <textarea class="form-control" name="deskripsi" rows="3">{{ $alat->latestPemeliharaan->deskripsi ?? '' }}</textarea>
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <label for="biaya_servis" class="form-label">
+                                                                Biaya Servis
+                                                                <span class="text-danger">*</span>
+                                                            </label>
+                                                            <input type="number" class="form-control"
+                                                                name="biaya_servis"
+                                                                value="{{ $alat->latestPemeliharaan->biaya_servis ?? '' }}"
+                                                                required>
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <label for="status_pemeliharaan" class="form-label">
+                                                                Status Pemeliharaan
+                                                                <span class="text-danger">*</span>
+                                                            </label>
+                                                            <select class="form-control" name="status_pemeliharaan"
+                                                                required>
+                                                                <option value="Dalam Proses"
+                                                                    {{ ($alat->latestPemeliharaan->status_pemeliharaan ?? '') === 'Dalam Proses' ? 'selected' : '' }}>
+                                                                    Dalam Proses
+                                                                </option>
+                                                                <option value="Selesai"
+                                                                    {{ ($alat->latestPemeliharaan->status_pemeliharaan ?? '') === 'Selesai' ? 'selected' : '' }}>
+                                                                    Selesai
+                                                                </option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary"
+                                                            data-bs-dismiss="modal">Tutup</button>
+                                                        <button type="submit" class="btn btn-primary">Simpan</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
                                 @endforeach
                             </tbody>
                         </table>
@@ -214,6 +300,65 @@
                         @csrf
                         <div class="modal-body">
                             @include('admin.pages.alat-berat._form_add')
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="maintenanceModal" tabindex="-1" aria-labelledby="maintenanceModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="maintenanceModalLabel">Maintenance Alat Berat</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form action="{{ route('pemeliharaan.store') }}" method="POST"
+                        onsubmit="return validateMaintenanceForm(event)">
+                        @csrf
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label for="alat_id" class="form-label">
+                                    Nama Alat
+                                    <span class="text-danger">*</span>
+                                </label>
+                                <select class="form-control" name="alat_id" id="alat_id">
+                                    <option value="">-- Pilih Alat Berat --</option>
+                                    @foreach ($alatBerats as $alat)
+                                        <option value="{{ $alat->id }}">{{ $alat->nama_alat }}</option>
+                                    @endforeach
+                                </select>
+                                <div class="mt-1 text-danger d-none" id="alatIdError"></div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="tgl_servis" class="form-label">
+                                    Tanggal Servis
+                                    <span class="text-danger">*</span>
+                                </label>
+                                <input type="date" class="form-control" id="tgl_servis" name="tgl_servis">
+                                <div class="mt-1 text-danger d-none" id="tglServisError"></div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="deskripsi" class="form-label">
+                                    Deskripsi
+                                    <span class="text-danger">*</span>
+                                </label>
+                                <input type="text" class="form-control" id="deskripsi" name="deskripsi">
+                                <div class="mt-1 text-danger d-none" id="deskripsiError"></div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="biaya_servis" class="form-label">
+                                    Biaya Servis
+                                    <span class="text-danger">*</span>
+                                </label>
+                                <input type="number" class="form-control" id="biaya_servis" name="biaya_servis">
+                                <div class="mt-1 text-danger d-none" id="biayaError"></div>
+                            </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -342,6 +487,44 @@
                 isValid = false;
                 document.getElementById('editDeskripsiError').classList.remove('d-none');
                 document.getElementById('editDeskripsiError').textContent = "Deskripsi tidak boleh kosong.";
+            }
+
+            if (!isValid) {
+                event.preventDefault();
+            }
+            return isValid;
+        }
+
+        function validateMaintenanceForm(event) {
+            let isValid = true;
+
+            const errorElements = document.querySelectorAll('.text-danger');
+            errorElements.forEach(el => el.classList.add('d-none'));
+
+            const namaAlat = document.getElementById('alat_id').value.trim();
+            const tglServis = document.getElementById('tgl_servis').value.trim();
+            const deskripsi = document.getElementById('deskripsi').value.trim();
+            const biaya = document.getElementById('biaya_servis').value.trim();
+
+            if (!namaAlat) {
+                isValid = false;
+                document.getElementById('alatIdError').classList.remove('d-none');
+                document.getElementById('alatIdError').textContent = "Alat harus dipilih.";
+            }
+            if (!tglServis) {
+                isValid = false;
+                document.getElementById('tglServisError').classList.remove('d-none');
+                document.getElementById('tglServisError').textContent = "Tanggal servis tidak boleh kosong.";
+            }
+            if (!deskripsi) {
+                isValid = false;
+                document.getElementById('deskripsiError').classList.remove('d-none');
+                document.getElementById('deskripsiError').textContent = "Deskripsi tidak boleh kosong.";
+            }
+            if (!biaya) {
+                isValid = false;
+                document.getElementById('biayaError').classList.remove('d-none');
+                document.getElementById('biayaError').textContent = "Biaya servis tidak boleh kosong.";
             }
 
             if (!isValid) {
