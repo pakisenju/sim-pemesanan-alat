@@ -71,7 +71,8 @@
             background-color: #f1f5f9;
         }
     </style>
-    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.3.6/css/buttons.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
 @endsection
 
 @section('content')
@@ -96,9 +97,9 @@
                             <div class="d-sm-flex d-block align-items-center justify-content-between mb-3">
                                 <h5 class="card-title fw-semibold m-0">Data Penyewaan</h5>
                                 <div>
-                                    <a href="" class="btn btn-outline-success btn-sm">
-                                        <i class="ti ti-download"></i> Excel
-                                    </a>
+                                    <button id="exportRentButton" class="btn btn-outline-success btn-sm">
+                                        <i class="ti ti-download me-1"></i> Excel
+                                    </button>
                                 </div>
                             </div>
                             <div class="card-body p-0">
@@ -150,6 +151,11 @@
                         <div class="card w-100 p-5">
                             <div class="d-sm-flex d-block align-items-center justify-content-between mb-3">
                                 <h5 class="card-title fw-semibold m-0">Data Maintenance</h5>
+                                <div>
+                                    <button id="exportMaintenanceButton" class="btn btn-outline-success btn-sm">
+                                        <i class="ti ti-download me-1"></i> Excel
+                                    </button>
+                                </div>
                             </div>
                             <div class="card-body p-0">
                                 <table class="table table-bordered table-hover" id="maintenanceTable">
@@ -184,27 +190,57 @@
 @endsection
 
 @section('script')
-    <script src="https://cdn.datatables.net/buttons/2.3.6/js/dataTables.buttons.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.html5.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.print.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.4/pdfmake.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.4/vfs_fonts.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
     <script>
-        $(document).ready(function() {
-            $('#rentTable, #maintenanceTable').DataTable({
-                "dom": '<"d-flex justify-content-between align-items-center"f>t<"d-flex justify-content-between align-items-center"ip>',
-                "buttons": [
-                    {
-                        extend: 'excelHtml5',
-                        text: 'Export Excel',
-                        className: 'btn btn-success btn-sm'
-                    },
-                ],
-                "language": {
-                    "search": "Cari:",
-                    "lengthMenu": "Tampilkan _MENU_ entri",
-                },
+        document.getElementById('exportRentButton').addEventListener('click', function() {
+            Swal.fire({
+                title: 'Export to Excel',
+                text: "Apakah Anda ingin export data ke Excel?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#4e73df',
+                cancelButtonColor: '#e74a3b',
+                confirmButtonText: 'Yes!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    var table = document.getElementById('rentTable');
+                    var workbook = XLSX.utils.table_to_book(table, {
+                        sheet: "Laporan Data Penyewaan"
+                    });
+                    XLSX.writeFile(workbook, 'Laporan_Data_Penyewaan.xlsx');
+
+                    Swal.fire(
+                        'Exported!',
+                        'Your file has been exported.',
+                        'success'
+                    );
+                }
+            });
+        });
+
+        document.getElementById('exportMaintenanceButton').addEventListener('click', function() {
+            Swal.fire({
+                title: 'Export to Excel',
+                text: "Apakah Anda ingin export data ke Excel?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#4e73df',
+                cancelButtonColor: '#e74a3b',
+                confirmButtonText: 'Yes!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    var table = document.getElementById('maintenanceTable');
+                    var workbook = XLSX.utils.table_to_book(table, {
+                        sheet: "Laporan Data Pemeliharaan"
+                    });
+                    XLSX.writeFile(workbook, 'Laporan_Data_Pemeliharaan.xlsx');
+
+                    Swal.fire(
+                        'Exported!',
+                        'Your file has been exported.',
+                        'success'
+                    );
+                }
             });
         });
     </script>

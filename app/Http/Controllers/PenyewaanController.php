@@ -27,10 +27,22 @@ class PenyewaanController extends Controller
 
     public function indexList()
     {
+        if (auth()->user()->roles->pluck('name')->contains('Customer')) {
+            $pelanggan = Pelanggan::where('user_id', auth()->id())->first();
+
+            if (!$pelanggan) {
+                return redirect()->back()->with('error', 'Data pelanggan tidak ditemukan.');
+            }
+
+            $penyewaans = Penyewaan::with('alat', 'pelanggan')
+                ->where('pelanggan_id', $pelanggan->id)
+                ->get();
+        } else {
+            $penyewaans = Penyewaan::with('alat', 'pelanggan')->get();
+        }
+
         $alatBerats = AlatBerat::all();
         $pelanggans = Pelanggan::all();
-
-        $penyewaans = Penyewaan::with('alat', 'pelanggan')->get();
 
         $data = compact('alatBerats', 'penyewaans', 'pelanggans');
 
