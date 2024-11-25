@@ -89,15 +89,17 @@
                 <div class="card w-100 p-5">
                     <div class="d-sm-flex d-block align-items-center justify-content-between mb-3">
                         <h5 class="card-title fw-semibold m-0">List Alat Berat</h5>
-                        <div class="card-toolbar d-flex gap-2">
-                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addModal">
-                                <i class="ti ti-plus me-1"></i> Tambah Data
-                            </button>
-                            <button class="btn btn-outline-secondary" data-bs-toggle="modal"
-                                data-bs-target="#maintenanceModal">
-                                <i class="ti ti-settings me-1"></i> Maintenance
-                            </button>
-                        </div>
+                        @role('Karyawan')
+                            <div class="card-toolbar d-flex gap-2">
+                                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addModal">
+                                    <i class="ti ti-plus me-1"></i> Tambah Data
+                                </button>
+                                <button class="btn btn-outline-secondary" data-bs-toggle="modal"
+                                    data-bs-target="#maintenanceModal">
+                                    <i class="ti ti-settings me-1"></i> Maintenance
+                                </button>
+                            </div>
+                        @endrole
                     </div>
                     <div class="card-body p-0 ">
                         <table class="table table-bordered table-hover" id="alatTable">
@@ -134,22 +136,26 @@
                                         </td>
                                         <td>
                                             <div class="action-buttons">
-                                                @if ($alat->latestPemeliharaan && $alat->latestPemeliharaan->status_pemeliharaan === 'Dalam Proses')
-                                                    <button class="btn btn-outline-warning" data-bs-toggle="modal"
-                                                        data-bs-target="#finishMaintenanceModal{{ $alat->id }}"
-                                                        title="Finish Maintenance">
-                                                        Dalam Pemeliharaan
-                                                    </button>
+                                                @role('Karyawan')
+                                                    @if ($alat->latestPemeliharaan && $alat->latestPemeliharaan->status_pemeliharaan === 'Dalam Proses')
+                                                        <button class="btn btn-outline-warning" data-bs-toggle="modal"
+                                                            data-bs-target="#finishMaintenanceModal{{ $alat->id }}"
+                                                            title="Finish Maintenance">
+                                                            Dalam Pemeliharaan
+                                                        </button>
+                                                    @else
+                                                        <button class="btn btn-outline-info" data-bs-toggle="modal"
+                                                            data-bs-target="#editModal{{ $alat->id }}" title="Edit">
+                                                            <i class="ti ti-edit"></i>
+                                                        </button>
+                                                        <button class="btn btn-outline-danger" data-bs-toggle="modal"
+                                                            data-bs-target="#deleteModal{{ $alat->id }}" title="Delete">
+                                                            <i class="ti ti-trash"></i>
+                                                        </button>
+                                                    @endif
                                                 @else
-                                                    <button class="btn btn-outline-info" data-bs-toggle="modal"
-                                                        data-bs-target="#editModal{{ $alat->id }}" title="Edit">
-                                                        <i class="ti ti-edit"></i>
-                                                    </button>
-                                                    <button class="btn btn-outline-danger" data-bs-toggle="modal"
-                                                        data-bs-target="#deleteModal{{ $alat->id }}" title="Delete">
-                                                        <i class="ti ti-trash"></i>
-                                                    </button>
-                                                @endif
+                                                -
+                                                @endrole
                                             </div>
                                         </td>
                                     </tr>
