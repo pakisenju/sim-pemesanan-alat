@@ -211,8 +211,7 @@
                                                         aria-label="Close"></button>
                                                 </div>
                                                 <form action="{{ route('penyewaan.reject', $item->id) }}" method="POST"
-                                                    enctype="multipart/form-data"
-                                                    onsubmit="return validateRejectForm(event)">
+                                                    enctype="multipart/form-data">
                                                     @csrf
                                                     <div class="modal-body">
                                                         <p>Apakah Anda yakin ingin menolak penyewaan ini?</p>
@@ -221,14 +220,14 @@
                                                                 Alasan Penolakan <span class="text-danger">*</span>
                                                             </label>
                                                             <input type="text" class="form-control" id="alasan_penolakan"
-                                                                name="alasan_penolakan">
+                                                                name="alasan_penolakan" required>
                                                             <div class="mt-1 text-danger d-none" id="alasanError"></div>
                                                         </div>
                                                         <div class="mb-3">
                                                             <label for="bukti_refund" class="form-label">Bukti Refund
                                                                 <span class="text-danger">*</span></label>
                                                             <input type="file" class="form-control" id="bukti_refund"
-                                                                name="bukti_refund">
+                                                                name="bukti_refund" required>
                                                             <div class="mt-1 text-danger d-none" id="buktiError"></div>
                                                         </div>
                                                     </div>
