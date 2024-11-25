@@ -183,7 +183,7 @@ class PenyewaanController extends Controller
 
     private function sendFonnteNotification($phoneNumber, $message)
     {
-        $token = 'VgUwxRSGsQc4z-jc9@gX';
+        $token = 'kPaKPfosZDPBBSVy2igt';
         $url = 'https://api.fonnte.com/send';
 
         $data = [

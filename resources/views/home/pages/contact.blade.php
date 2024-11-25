@@ -119,13 +119,13 @@
 
 @section('script')
     <script>
-        var map = L.map('map').setView([-1.2227088475516248, 116.81373870445641], 13);
+        var map = L.map('map').setView([-1.2255948353365893, 116.817724184114], 13);
 
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '© OpenStreetMap contributors'
         }).addTo(map);
 
-        L.marker([-1.2227088475516248, 116.81373870445641]).addTo(map)
+        L.marker([-1.2255948353365893, 116.817724184114]).addTo(map)
             .bindPopup('Jl Wolter Monginsidi No 50 Baru Ulu<br>Balikpapan Barat, Balikpapan')
             .openPopup();
     </script>
