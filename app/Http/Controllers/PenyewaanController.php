@@ -36,9 +36,12 @@ class PenyewaanController extends Controller
 
             $penyewaans = Penyewaan::with('alat', 'pelanggan')
                 ->where('pelanggan_id', $pelanggan->id)
+                ->orderBy('created_at', 'desc')
                 ->get();
         } else {
-            $penyewaans = Penyewaan::with('alat', 'pelanggan')->get();
+            $penyewaans = Penyewaan::with('alat', 'pelanggan')
+                ->orderBy('created_at', 'desc')
+                ->get();
         }
 
         $alatBerats = AlatBerat::all();
@@ -140,11 +143,33 @@ class PenyewaanController extends Controller
         return redirect()->route('penyewaan.indexList')->with('OK', 'Penyewaan berhasil ditolak.');
     }
 
+    public function sendReminder($id, Request $request)
+    {
+        $penyewaan = Penyewaan::findOrFail($id);
+
+        $phoneNumber = $penyewaan->pelanggan->nomor_telepon; 
+
+        $message = $request->input('message');
+
+        $response = $this->sendFonnteNotification($phoneNumber, $message);
+
+        if ($response) {
+            return redirect()->back()->with('OK', 'Pengingat berhasil dikirim.');
+        } else {
+            return redirect()->back()->with('ERR', 'Terjadi kesalahan saat mengirim pengingat.');
+        }
+    }
+
     public function finish(Request $request, Penyewaan $penyewaan)
     {
         $penyewaan->update(['status_penyewaan' => 'Selesai']);
 
         $penyewaan->alat->update(['status_ketersediaan' => 'Tersedia']);
+
+        $this->sendFonnteNotification(
+            $penyewaan->pelanggan->nomor_telepon,
+            "Halo {$penyewaan->pelanggan->nama},\n\nTerima kasih telah menyewa alat berat *{$penyewaan->alat->nama_alat}* dari kami.\n\nKami sangat menghargai kepercayaan Anda. Jika ada pertanyaan atau kebutuhan lain, jangan ragu untuk menghubungi kami.\n\nKami berharap dapat melayani Anda kembali di masa depan!"
+        );
 
         return redirect()->route('penyewaan.indexList')->with('OK', 'Penyewaan berhasil diselesaikan.');
     }

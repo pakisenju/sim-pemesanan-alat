@@ -48,6 +48,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/penyewaan/{penyewaan}/accept', [PenyewaanController::class, 'accept'])->name('penyewaan.accept');
     Route::post('/penyewaan/{penyewaan}/reject', [PenyewaanController::class, 'reject'])->name('penyewaan.reject');
     Route::post('/penyewaan/{penyewaan}/finish', [PenyewaanController::class, 'finish'])->name('penyewaan.finish');
+    Route::post('/penyewaan/{id}/sendReminder', [PenyewaanController::class, 'sendReminder'])->name('penyewaan.sendReminder');
     Route::get('/list-penyewaan', [PenyewaanController::class, 'indexList'])->name('penyewaan.indexList');
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 });

@@ -100,7 +100,7 @@
                                 <th>Bukti Pembayaran</th>
                                 <th>Status</th>
                                 <th>Keterangan</th>
-                                @role('Pimpinan')
+                                @role('Karyawan')
                                 <th>Actions</th>
                                 @endrole
                             </tr>
@@ -152,14 +152,20 @@
                                     <p class="fw-bold m-0">-</p>
                                     @endif
                                 </td>
-                                @role('Pimpinan')
+                                @role('Karyawan')
                                 <td>
                                     <div class="action-buttons">
                                         @if ($item->status_penyewaan === 'Sedang Berjalan')
-                                        <button class="btn btn-outline-warning" data-bs-toggle="modal"
-                                            data-bs-target="#finishModal{{ $item->id }}" title="Finish">
-                                            Sedang Berjalan
-                                        </button>
+                                        <div class="d-flex flex-column gap-2">
+                                            <button class="btn btn-outline-warning" data-bs-toggle="modal"
+                                                data-bs-target="#finishModal{{ $item->id }}" title="Finish">
+                                                Sedang Berjalan
+                                            </button>
+                                            <button class="btn btn-outline-primary" data-bs-toggle="modal"
+                                                data-bs-target="#reminderModal{{ $item->id }}" title="Reminder">
+                                                Kirim Pengingat
+                                            </button>
+                                        </div>
                                         @elseif ($item->status_penyewaan === 'Sedang Diproses')
                                         <button class="btn btn-outline-info" data-bs-toggle="modal"
                                             data-bs-target="#acceptModal{{ $item->id }}" title="Accept">
@@ -268,6 +274,27 @@
                                                 <button type="submit" class="btn btn-success">Finish</button>
                                             </div>
                                         </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Reminder Modal -->
+                            <div class="modal fade" id="reminderModal{{ $item->id }}" tabindex="-1" aria-labelledby="reminderModalLabel{{ $item->id }}" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="reminderModalLabel{{ $item->id }}">Kirim Pengingat ke Pelanggan</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form action="{{ route('penyewaan.sendReminder', $item->id) }}" method="POST">
+                                                @csrf
+                                                <div class="mb-3">
+                                                    <label for="message" class="form-label">Pesan Pengingat</label>
+                                                    <textarea class="form-control" id="message" name="message" rows="4" required placeholder="Tulis pesan pengingat di sini"></textarea>
+                                                </div>
+                                                <button type="submit" class="btn btn-primary">Kirim Pengingat</button>
+                                            </form>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
